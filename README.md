@@ -1,37 +1,29 @@
-## Welcome to GitHub Pages
+# WELCOME
 
-You can use the [editor on GitHub](https://github.com/flyingmt/flyingmt.github.io/edit/master/README.md) to maintain and preview the content for your website in Markdown files.
+안녕하세요. 
+저의 GitHub 페이지에 오신것을 환영합니다.
 
-Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://jekyllrb.com/) to rebuild the pages in your site, from the content in your Markdown files.
+# INFORMATION
 
-### Markdown
+저는 열정적인 개발자입니다. 
+저에 대해 관심이 있으면 아래 링크에서 자세하게 보실수 있습니다. 
 
-Markdown is a lightweight and easy-to-use syntax for styling your writing. It includes conventions for
+- [한글 이력서](https://github.com/flyingmt/flyingmt.github.io/edit/master/resume.ko.md)
+- [English Resume](https://github.com/flyingmt/flyingmt.github.io/edit/master/resume.en.md)
 
-```markdown
-Syntax highlighted code block
+# PROJECTS
 
-# Header 1
-## Header 2
-### Header 3
+저는 다음 프로젝트들을 진행해 왔습니다. 
 
-- Bulleted
-- List
+- [프로젝트 1](https://github.com/flyingmt/flyingmt.github.io/edit/master/projects/project01.md)
+- [프로젝트 2](https://github.com/flyingmt/flyingmt.github.io/edit/master/projects/project02.md)
+- [프로젝트 3](https://github.com/flyingmt/flyingmt.github.io/edit/master/projects/project03.md)
 
-1. Numbered
-2. List
+# STUDY
 
-**Bold** and _Italic_ and `Code` text
+저는 다음을 배우고 공부하고 있습니다. 
 
-[Link](url) and ![Image](src)
-```
+- [공부하고 있는 것 1](https://github.com/flyingmt/flyingmt.github.io/edit/master/study/study01.md)
+- [공부하고 있는 것 2](https://github.com/flyingmt/flyingmt.github.io/edit/master/study/study02.md)
+- [공부하고 있는 것 3](https://github.com/flyingmt/flyingmt.github.io/edit/master/study/study03.md)
 
-For more details see [GitHub Flavored Markdown](https://guides.github.com/features/mastering-markdown/).
-
-### Jekyll Themes
-
-Your Pages site will use the layout and styles from the Jekyll theme you have selected in your [repository settings](https://github.com/flyingmt/flyingmt.github.io/settings). The name of this theme is saved in the Jekyll `_config.yml` configuration file.
-
-### Support or Contact
-
-Having trouble with Pages? Check out our [documentation](https://help.github.com/categories/github-pages-basics/) or [contact support](https://github.com/contact) and we’ll help you sort it out.
