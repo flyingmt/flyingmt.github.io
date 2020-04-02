@@ -8,7 +8,7 @@
 저는 열정적인 개발자입니다. 
 저에 대해 관심이 있으면 아래 링크에서 자세하게 보실수 있습니다. 
 
-- [한글 이력서](https://flyingmt.github.io/devportfolio/)
+- [한글 소개서](https://flyingmt.github.io/devportfolio/)
 - [English Resume](https://github.com/flyingmt/flyingmt.github.io/edit/master/resume.en.md)
 
 ## PROJECTS
