@@ -15,6 +15,8 @@
 
 저는 다음을 배우고 공부하고 있습니다. 
 
+- [Javascript](https://github.com/flyingmt/flyingmt.github.io/blob/master/study/javascript.md)
+
 - [React](https://github.com/flyingmt/flyingmt.github.io/blob/master/study/react.md)
 
 - [Java Spring Boot](https://github.com/flyingmt/flyingmt.github.io/blob/master/study/java-spring-boot.md)
