@@ -2,7 +2,7 @@
 
 ### Gradle에 대한 것들
 
-* 윈도우는 gradlew.bat로, 나머지는 gradlew로 명령함.
+* Gradle을 실행하기 위해서는 터미널에서 윈도우는 gradlew.bat로, 나머지는 gradlew로 명령함.
 * 전체 빌드시 gradlew.bat build로 명령함. (빌드시 테스트도 실행함)
 * 전체 테스트시 gradlew.bat test로 명령함. (IntelliJ에 Gradle로 추가할 수 있음, 명령에 여러개를 추가할 수 있음, 예: clean test)
 * IntelliJ의 자체 테스트가 아닌 Gradle로 테스트하고 싶으면 Settings > Build, Execution, Deployment > Gradle에 "Build and run using"과 "Run tests using"을 Gradle로 변경하면 됨.
