@@ -15,7 +15,8 @@
 
 저는 다음을 배우고 공부하고 있습니다. 
 
-- [React](https://github.com/flyingmt/flyingmt.github.io/edit/master/study/react.md)
-- [Java Spring Boot](https://github.com/flyingmt/flyingmt.github.io/edit/master/study/java-spring-boot.md)
-- [Deep Learning](https://github.com/flyingmt/flyingmt.github.io/edit/master/study/deep-learning.md)
+- [React](https://github.com/flyingmt/flyingmt.github.io/blob/master/study/react.md)
+- [Java Spring Boot](https://github.com/flyingmt/flyingmt.github.io/blob/master/study/java-spring-boot.md)
+
+- [Deep Learning](https://github.com/flyingmt/flyingmt.github.io/blob/master/study/deep-learning.md)
 
