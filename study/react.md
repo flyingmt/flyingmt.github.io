@@ -215,3 +215,72 @@
         )
     }
     ```
+### 조건부 렌더링
+- 조건부 렌더링 예제 (true/false는 {} 묶어서 사용해야 함)
+
+    ```javascript    
+    function App() {
+        return (
+            <Wrapper>
+                <Hello color="read" isSpecial={true}/>
+                <Hello name="react" color="read" />
+            </Wrapper>
+        )
+    }
+    ```
+    ```javascript
+    import React from 'react';
+
+    function Hello({color, name, isSpecial}) {
+        return (
+            <div style={{
+                color
+            }}>
+                {isSpecial ? <b>*</b> : null}
+                안녕하세요, {name}!
+            </div>
+        )
+    }
+
+    Hello.defaultProps = {
+        name: '이름없음'
+    }
+
+    export default Hello;
+    ```
+    JSX에서는 null, false, undefined를 렌더링하면 아무것도 표시하지 않음
+
+    어떤 조건일때 무엇인가 표시만 하는 루팅이 있다면 다음과 같이 &&를 사용해도 됨.
+    ```javascript
+    import React from 'react';
+
+    function Hello({color, name, isSpecial}) {
+        return (
+            <div style={{
+                color
+            }}>
+                {isSpecial && <b>*</b>}
+                안녕하세요, {name}!
+            </div>
+        )
+    }
+
+    Hello.defaultProps = {
+        name: '이름없음'
+    }
+
+    export default Hello;
+    ```
+
+    또, 부울린 값을 전달때 true이면 다음과 같이 줄여서 사용할 수 있음.
+    ```javascript    
+    function App() {
+        return (
+            <Wrapper>
+                <Hello color="read" isSpecial/>
+                <Hello name="react" color="read" />
+            </Wrapper>
+        )
+    }
+    ```
+
