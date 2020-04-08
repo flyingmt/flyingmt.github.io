@@ -129,3 +129,89 @@
         </>
     )
     ```
+
+### 컴포넌트에게 값 전달 (props)
+- 단어 props는 Properties의 줄임말
+- 기능 props는 특정 값을 컴포넌트에 넘기고 싶을 때 사용
+    ```javascript
+    <Child value="value" />>
+    ```
+- 다음과 같이 Hello에 name, color 속성에 가각 'react', 'red' 라는 것을 넘기면,
+    ```javascript
+    function App() {
+        return (
+            <Hello name="react" color="read" />
+        )
+    }
+    ```
+    Hello 함수에 props라는 파라미터를 만들어서 사용함.
+    ```javascript
+    function Hello(props) {
+        return (
+            <div style={{
+                color: props.color
+            }}>안녕하세요, {props.name}!</div>
+        )
+    }
+    ```
+- Props를 받을 때, 구조 분해서 받으면 코드가 간단해짐
+    ```javascript
+    function Hello({color, name}) {
+        return (
+            <div style={{
+                color: color
+            }}>안녕하세요, {name}!</div>
+        )
+    }
+    ```
+- 스타일에서 속성명과 그 속성에 설정한 변수명이 같다면...
+    ```javascript
+    function Hello({color, name}) {
+        return (
+            <div style={{
+                color
+            }}>안녕하세요, {name}!</div>
+        )
+    }
+    ```
+- Props 기본값을 설정하고 싶을때
+    ```javascript
+    import React from 'react';
+
+    function Hello({color, name}) {
+        return (
+            <div style={{
+                color
+            }}>안녕하세요, {name}!</div>
+        )
+    }
+
+    Hello.defaultProps = {
+        name: '이름없음'
+    }
+
+    export default Hello;
+    ```
+- Props Children이란? 속성이 아니라, 태그 값임.
+    ```javascript
+    <Wrapper>Children</Wrapper>
+    ```
+- Props Children은 다음과 같이 사용 함
+    ```javascript
+    function Wrapper({children}) {
+        const style = {
+            border: '2px solid black',
+            padding: 16
+        };
+        return <div style={style}>{children}</div>
+    }
+
+    function App() {
+        return (
+            <Wrapper>
+                <Hello name="react" color="read" />
+                <Hello name="react" color="read" />
+            </Wrapper>
+        )
+    }
+    ```
