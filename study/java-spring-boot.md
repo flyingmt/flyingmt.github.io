@@ -1,5 +1,21 @@
 ## Java Spring Boot
 
+### 개발 환경 구성하기
+
+* [Chocolatey](https://chocolatey.org/)로 프로그램 관리하는 것이 편함
+
+  ```
+  $ choco install jdk8
+  $ choco install maven
+  ```
+* IntelliJ에 Plugin으로 다음을 깔아 주는게 좋음
+  - Lombok
+  - Rainbow Brackets
+  - Matrial Theme UI
+  - Atom Material Icons
+* 추가로 Ligature 폰트를 사용하면 코딩 가독성을 높일 수 있음
+  - [D2Coding 글꼴](https://github.com/naver/d2codingfont)
+
 ### Gradle에 대한 것들
 
 * Gradle을 실행하기 위해서는 터미널에서 윈도우는 gradlew.bat로, 나머지는 gradlew로 명령함.
