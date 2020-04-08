@@ -11,19 +11,11 @@
 
 - [한글 소개서](https://flyingmt.github.io/devportfolio/)
 
-## PROJECTS
-
-저는 다음 프로젝트들을 진행해 왔습니다. 
-
-- [프로젝트 1](https://github.com/flyingmt/flyingmt.github.io/edit/master/projects/project01.md)
-- [프로젝트 2](https://github.com/flyingmt/flyingmt.github.io/edit/master/projects/project02.md)
-- [프로젝트 3](https://github.com/flyingmt/flyingmt.github.io/edit/master/projects/project03.md)
-
 ## STUDY
 
 저는 다음을 배우고 공부하고 있습니다. 
 
+- [React](https://github.com/flyingmt/flyingmt.github.io/edit/master/study/study02.md)
 - [Java Spring Boot](https://github.com/flyingmt/flyingmt.github.io/edit/master/study/java-spring-boot.md)
-- [공부하고 있는 것 2](https://github.com/flyingmt/flyingmt.github.io/edit/master/study/study02.md)
-- [공부하고 있는 것 3](https://github.com/flyingmt/flyingmt.github.io/edit/master/study/study03.md)
+- [Deep Learning](https://github.com/flyingmt/flyingmt.github.io/edit/master/study/study03.md)
 
