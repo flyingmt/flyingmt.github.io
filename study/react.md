@@ -283,4 +283,46 @@
         )
     }
     ```
+### 사용자 인터렉션에 따른 상태 관리
+
+- 이전 React 버전에는 함수형 컴포넌트에서는 상태 관리를 사용할 수 없었지만, 16.8 부터는 사용 가능해 졌음. 상태 관리 기능을 사용하기 위해서는 'react'에서 useState를 임포트하고, 반환값이 변수명, 설명 함수명을 배열로 주는 초기화 값을 포함한 useState를 호출하면 됨.
+    ```javascript    
+    import React, {useState} from 'react';
+    
+    function Counter() {
+        const [number, setNumber] = useState(0);
+
+        const onIncrease = () => {
+            setNumber(number + 1);
+        }
+        const onDecrease = () => {
+            setNumber(number - 1);
+        }
+        return (
+            <div>
+                <h1>0</h1>
+                <button onClick="{onIncrease}">+1</button>
+                <button onClick="{onDecrease}">-1</button>
+            </div>
+        )
+    }
+    ```    
+    위 코드에서 주의해야할 것이 있다면 이벤트를 연결할때 다음 처럼 호출형태로 코딩하면 안됨. (랜더링 될때 호출되기 때문)
+    ```javascript    
+    function Counter() {
+        return (
+            <div>
+                <h1>{number}</h1>
+                <button onClick="{onIncrease()}">+1</button>
+                <button onClick="{onDecrease()}">-1</button>
+            </div>
+        )
+    }
+    ```
+    다음 처럼 useState의 설정 함수는 과거값을 참조하여 어떻게 업데이트 할지 설정할 수 있음. (함수형 업데이트, 최적화와 관련 있음)
+    ```javascript    
+    const onIncrease = () => {
+        setNumber(prevNumber => prevNumber + 1);
+    }
+    ```
 
