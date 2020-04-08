@@ -249,7 +249,7 @@
         const turtle = results[2];
     }
     ```
-    배열 비구조 할당, 구조 분해 문법을 사용하여 단순화할 수 있음
+    배열 비구조 할당, 구조 분해 문법을 사용하여 단순화할 수 있음 (단, 하나의 함수라도 에러가 발생하면 전체가 에러가 난것으로 간주함)
     ```javascript
     async function process() {
         const [dog, rabbit, turtle] = await Promise.all(
@@ -257,7 +257,7 @@
         );
     }
     ```
-- 여러개의 비동기 함수 중에 가장 빠른 것을 받으려면 Promise.race를 사용함
+- 여러개의 비동기 함수 중에 가장 빠른 것을 받으려면 Promise.race를 사용함 (가장 빠른 것만 에러가 발생하지 않으면 됨)
     ```javascript
     async function process() {
         const first = await Promise.race(
