@@ -50,7 +50,7 @@
     함수가 반환되는 것은 렌더링되는 HTML 요소로 React에서는 JSX라고 한다.
     마지막에는 export로 함수를 노출한다.
 
-- 컴포넌트 형태 컴포넌트 정의 (TODO)
+- [TODO] 클래스 형태 형태 컴포넌트 정의
 - 컴포넌트 사용하기 (App.js)
     ```javascript
     import React from 'react';
