@@ -285,7 +285,7 @@
     ```
 ### 사용자 인터렉션에 따른 상태 관리 (useState)
 
-- 이전 React 버전에는 함수형 컴포넌트에서는 상태 관리를 사용할 수 없었지만, 16.8 부터는 사용 가능해 졌음. 상태 관리 기능을 사용하기 위해서는 'react'에서 useState를 임포트하고, 반환값이 변수명, 설명 함수명을 배열로 주는 초기화 값을 포함한 useState를 호출하면 됨.
+- 이전 React 버전에는 함수형 컴포넌트에서는 상태 관리를 사용할 수 없었지만, 16.8 부터는 사용 가능해 졌음. 상태 관리 기능을 사용하기 위해서는 'react'에서 useState를 임포트하고, 반환값이 변수명, 설명 함수명을 배열로 주는 초기화 값을 포함한 useState를 호출하면 됨. (onClick)
     ```javascript    
     import React, {useState} from 'react';
     
@@ -325,4 +325,71 @@
         setNumber(prevNumber => prevNumber + 1);
     }
     ```
+- 입력값 상태 관리 (onChange)
+    ```javascript
+    import React, {useState} from 'react';
 
+    function InputSample() {
+        const [text, setText] = useState('');
+
+        const onChange = (e) => {
+            setText(e.target.value);
+        }
+
+        const onReset = () => {
+            setText('');
+        }
+        return (
+            <input onChange={onChange} value={text}/>
+            <button onClick={onReset}>초기화</button>
+            <div>
+                <b>값: </b>
+                {text}
+            </div>
+        );
+    }
+
+    export default InputSample;
+    ```
+- 여러개의 입력값 상태 관리 (여러개의 useState과 onChange를 만들면 효과적이지 않음, 객체를 설정할때는 spread '...'을 사용해서 복사한 후 변화된 값들을 수정함)
+     ```javascript
+    import React, {useState} from 'react';
+
+    function InputSample() {
+        const [inputs, setInputs] = useState({
+            name: '',
+            nickname: '',
+        });
+        const {name, nickname} = inputs;
+        const onChange = (e) => {
+            const { name, value } = e.target;
+
+            setInputs({
+                ...inputs,
+                [name]: value,
+            });
+        }
+
+        const onReset = () => {
+            setInputs({
+                name: '',
+                nickname: '',
+            });
+        }
+        return (
+            <input name="name" placeholder="이름" 
+                onChange={onChange}
+                value={name}/>
+            <input name="nickname" placeholder="닉네임"
+                onChange={onChange}
+                value={nickname}/>
+            <button onClick={onReset}>초기화</button>
+            <div>
+                <b>값: </b>
+                {name} ({nickname})
+            </div>
+        );
+    }
+
+    export default InputSample;
+    ```
