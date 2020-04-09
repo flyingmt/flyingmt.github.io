@@ -168,10 +168,60 @@
     ```
 ### 컴포넌트 생명주기(LifeCycle) 메서드 (클래스형에서만 작동)
 
-- constructor (생성될때)
-- getDerivedStateFromProps (constructor, new Props, setState, forceUpdate)
-- shouldComponentUpdate
-- render
-- getShapshotBeforeUpdate
-- componentDidMount
-- componentWillUnmount (제거될때)
+- 함수들
+    - constructor (생성될때)
+        ```javascript
+        constructor(props) {
+            super(props);
+            console.log("constructor");
+        }
+        ```
+    - getDerivedStateFromProps (constructor, new Props, setState, forceUpdate)
+        ```javascript
+        static getDerivedStateFromProps(nextProps, prevState) {
+            console.log("getDerivedStateFromProps");
+            if (nextProps.color !== prevState.color) {
+                return {color: nextProps.color };
+            }
+            return null;
+        }
+        ```
+    - shouldComponentUpdate (true를 반환하면 렌더링됨)
+        ```javascript
+        shouldComponentUpdate(nextProps, nextState) {
+            console.log('shouldComponentUpdate');
+            return nextState.number % 10 !== 4;
+        }
+        ```
+    - render
+    - getShapshotBeforeUpdate (DOM 접근 가능)
+        ```javascript
+        getShapshotBeforeUpdate(prevProps, prevState) {
+            console.log('getShapshotBeforeUpdate');
+            if (prevProps.color !== this.props.color) {
+                return this.myRef.style.color;
+            }
+            return null;
+        }
+        ```
+    - componentDidMount (DOM 접근 가능)
+        ```javascript
+        componentDidMount() {
+            console.log('컴포넌트가 보여지고 있습니다.');
+        }
+        ```
+    - componentWillUnmount (제거될때)
+
+- 마운트 순서
+    - constructor
+    - getDerivedStateFromProps
+    - render
+    - componentDidMount
+- 업데이트 순서
+    - getDerivedStateFromProps
+    - shouldComponentUpdate
+    - render
+    - getShapshotBeforeUpdate
+    - componentDidUpdate
+- 언마운터 순서
+    - componentWillUnmount
