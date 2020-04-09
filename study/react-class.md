@@ -166,3 +166,12 @@
 
     export default Counter;
     ```
+### 컴포넌트 생명주기(LifeCycle) 메서드 (클래스형에서만 작동)
+
+- constructor (생성될때)
+- getDerivedStateFromProps (constructor, new Props, setState, forceUpdate)
+- shouldComponentUpdate
+- render
+- getShapshotBeforeUpdate
+- componentDidMount
+- componentWillUnmount (제거될때)
