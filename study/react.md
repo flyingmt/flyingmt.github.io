@@ -1335,3 +1335,7 @@
 
     export ContextSample;
     ```
+- 전역으로 설정해야 함
+    ```javascript
+    export const UserDispatch = createContext(null);
+    ```
