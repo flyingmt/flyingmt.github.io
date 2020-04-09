@@ -393,3 +393,619 @@
 
     export default InputSample;
     ```
+
+### 특정 DOM 선택하기 (함수형에서 useRef) 
+
+- 특정 DOM 크기, Scroll 위치, Focus 등에 특정 상황에서 DOM 내용을 가져와야 할때 사용
+    ```javascript
+    import React, {useState, useRef} from 'react';
+
+    function InputSample() {
+        const [inputs, setInputs] = useState({
+            name: '',
+            nickname: '',
+        });
+        const nameInput = useRef();
+        const {name, nickname} = inputs;
+        const onChange = (e) => {
+            const { name, value } = e.target;
+
+            setInputs({
+                ...inputs,
+                [name]: value,
+            });
+        }
+
+        const onReset = () => {
+            setInputs({
+                name: '',
+                nickname: '',
+            });
+            nameInput.current.focus();
+        }
+        return (
+            <input name="name" placeholder="이름" 
+                onChange={onChange}
+                value={name}
+                ref={nameInput}/>
+            <input name="nickname" placeholder="닉네임"
+                onChange={onChange}
+                value={nickname}/>
+            <button onClick={onReset}>초기화</button>
+            <div>
+                <b>값: </b>
+                {name} ({nickname})
+            </div>
+        );
+    }
+
+    export default InputSample;
+    ```
+    위 코드에서 useRef 함수를 정의하고, JSX에서 접근하고자 하는 DOM의 속성에 ref를 설정하고, current를 사용하여서 DOM 함수를 사용하면 됨.
+- 렌더링과 상관없은 변수 사용에도 useRef를 이용할때도 있음
+
+### 배열 렌더링하기
+
+- 여려개의 똑같은 항목들을 표출하려면, 그것을 표출하는 컴포넌트를 만들어서 사용함.
+
+    ```javascript
+    import React from 'react';        
+
+    function User({ user }) {
+        return (
+            <div>
+                <b>{user.username</b> <span>({user.email})</span>
+            </div>
+        );
+    }
+
+    function UserList() {
+        const users = []; // 배열 정의
+        return (
+            <User user={users[0]} />
+            <User user={users[1]} />
+            <User user={users[2]} />
+        );
+    }
+
+    export default UserList;
+    ```
+- 그리고 함수 map을 활용함. 여기서 각 항목은 key를 제공해야 함.
+
+    ```javascript
+    import React from 'react';        
+
+    function User({ user }) {
+        return (
+            <div>
+                <b>{user.username}</b> <span>({user.email})</span>
+            </div>
+        );
+    }
+
+    function UserList() {
+        const users = []; // 배열 정의
+        return (
+            {
+                users.map(
+                    user => (<User user={user} key={user.id} />)
+                )
+            }
+        );
+    }
+
+    export default UserList;
+    ```
+- 조금 더 코드 정리하기 (useRef로 컴포넌트 안의 변수 만들기 / 렌더링이 필요없을 때)
+    ```javascript
+    import React, {useRef} from 'react';        
+
+    function App() {
+        const users = []; // 배열 정의
+
+        const nextId = useRef(4);
+
+        const onCreate = () => {
+            console.log(nextId.current); // 4
+            nextId.current += 1;
+        };
+
+        return (
+            <UserList users={users} />
+        );
+    }
+
+    export default App;
+    ```
+    ```javascript
+    import React from 'react';        
+
+    function User({ user }) {
+        return (
+            <div>
+                <b>{user.username}</b> <span>({user.email})</span>
+            </div>
+        );
+    }
+
+    function UserList({ users }) {
+        
+        return (
+            {
+                users.map(
+                    user => (<User user={user} key={user.id} />)
+                )
+            }
+        );
+    }
+
+    export default UserList;
+    ```
+- 배열에 항목 추가하기 (spread을 이용하는 방법과 concat을 이용하는 방법)
+    ```javascript
+    import React from 'react';        
+
+    function CreateUser({ username, email, onChange, onCreate }) {
+        return (
+            <div>
+                <input 
+                    name="username" 
+                    onChange={onChange}
+                    value={username}/>
+                <input
+                    name="email" 
+                    onChange={onChange}
+                    value={email}/>
+                <button onClick={onCreate}>등록</button>
+            </div>
+        );
+    }
+
+    export default CreateUser;
+    ```
+    ```javascript
+    import React, {useRef, useState} from 'react';        
+
+    function App() {
+        const [users, setUsers] = userState([]); // 배열 정의
+        const [inputs, setInputs] = userState({
+            username: '',
+            email: '',
+        });
+        const {username, email} = inputs;
+
+        const onChange = e => {
+            const {name, value} = e.target;
+            setInputs({
+                ...inputs,
+                [name]: value
+            });
+        };
+
+        const nextId = useRef(4);
+
+        const onCreate = () => {
+            const user = {
+                id: nextId.current,
+                username,
+                email,
+            };
+            //setUsers([...users, user]);
+            serUsers(users.concat(user));
+            setInputs({
+                username: '',
+                email: '',
+            });
+            nextId.current += 1;
+        };
+
+        return (
+            <>
+                <CreateUser 
+                    username={username}
+                    email={email}
+                    onChange={onChange}
+                    onCreate={onCreate} />
+                <UserList users={users} />
+            </>
+        );
+    }
+
+    export default App;
+    ```    
+
+- 배열에서 제거하기 (filter 사용하기 : 불변성, onClick에서 호출하는 함수를 만들어야 함)
+
+    ```javascript
+    import React from 'react';        
+
+    function User({ user, onRemove }) {
+        const {username, email, id } = user;
+        return (
+            <div>
+                <b>{username}</b> <span>({email})</span>
+                <button onClick={() => onRemove(id)}>삭제</button>
+            </div>
+        );
+    }
+
+    function UserList({users, onRemove}) {
+        return (
+            {
+                users.map(
+                    (user, index) => (
+                        <User 
+                            user={user} 
+                            key={user.id} 
+                            onRemove={onRemove} />
+                    )
+                )
+            }
+        );
+    }
+
+    export default UserList;
+    ```
+    ```javascript
+    const onRemove = id => {
+        setUsers(users.filter(user => user id !== id));
+    }    
+
+    return (
+            <UserList users={users} onRemove={onRemove}/>
+        );
+    ```
+- 배열 수정하기 (Users에 active 항목 추가해서)
+
+    ```javascript
+    import React from 'react';        
+
+    function User({ user, onRemove, onToggle }) {
+        const {username, email, id, active } = user;
+        return (
+            <div>
+                <b 
+                    onClick={() => onToggle(id)}
+                    style={{
+                    color: active ? 'green' : 'black',
+                    cursor: 'pointer'
+                }}>&nbsp;{username}</b> <span>({email})</span>
+                <button onClick={() => onRemove(id)}>삭제</button>
+            </div>
+        );
+    }
+
+    function UserList({users, onRemove, onToggle}) {
+        return (
+            {
+                users.map(
+                    (user, index) => (
+                        <User 
+                            user={user} 
+                            key={user.id} 
+                            onRemove={onRemove}
+                            onToggle={onToggle} />
+                    )
+                )
+            }
+        );
+    }
+
+    export default UserList;
+    ```
+
+    ```javascript
+    const onToggle = id => {
+        setUsers(users.map(
+            user => user.id === id
+                ? {...user, active: !user.active}
+                : user
+        ));
+    }    
+
+    return (
+            <UserList 
+                users={users} 
+                onRemove={onRemove}
+                onToggle={onToggle}/>
+        );
+    ```
+
+### 함수형 컴포넌트의 useEffect Hook
+
+- 컴포넌트가 나타날때(Mount)와 사라질때(Unmount) 추가 작업을 할때 사용
+- useEffect 사용시 두번째 파라미터는 의존되는 값들임
+
+    ```javascript
+    import React, {useEffect} from 'react';        
+
+    function User({ user, onRemove, onToggle }) {
+        const {username, email, id, active } = user;
+        useEffect(() => {
+            console.log('컴포넌트가 화면에 나타남');
+            return () => {
+                console.log('컴포넌트가 화면에 사라짐');
+            }
+        }, []);
+        return (
+            <div>
+                <b 
+                    onClick={() => onToggle(id)}
+                    style={{
+                    color: active ? 'green' : 'black',
+                    cursor: 'pointer'
+                }}>&nbsp;{username}</b> <span>({email})</span>
+                <button onClick={() => onRemove(id)}>삭제</button>
+            </div>
+        );
+    }
+
+    function UserList({users, onRemove, onToggle}) {
+        return (
+            {
+                users.map(
+                    (user, index) => (
+                        <User 
+                            user={user} 
+                            key={user.id} 
+                            onRemove={onRemove}
+                            onToggle={onToggle} />
+                    )
+                )
+            }
+        );
+    }
+
+    export default UserList;
+    ```
+- Mount 될때 주로 추가하는 작업들
+    - props로 받은 것을 state로 설정할때
+    - 외부 API 요청시
+    - 라이브러리(D3, Video.js 등) 초기화할때
+    - setInterval, setTimeout를 사용할때
+
+- Unmount 될때 주로 추가하는 작업들
+    - clearInterval, clearTimeout를 사용할때
+    - 라이브러리 인스턴스 제거
+
+- 속성 user가 변경되었을때 마다 호출되는 예제
+
+    ```javascript
+    import React, {useEffect} from 'react';        
+
+    function User({ user, onRemove, onToggle }) {
+        const {username, email, id, active } = user;
+        useEffect(() => {
+            console.log(user);
+            return () => {
+                console.log(user);
+            }
+        }, [user]);
+        return (
+            <div>
+                <b 
+                    onClick={() => onToggle(id)}
+                    style={{
+                    color: active ? 'green' : 'black',
+                    cursor: 'pointer'
+                }}>&nbsp;{username}</b> <span>({email})</span>
+                <button onClick={() => onRemove(id)}>삭제</button>
+            </div>
+        );
+    }
+    ```
+
+### 함수형 컴포넌트의 useMemo Hook
+
+- 이전 연산된 값을 재사용할때 사용
+- 성능 최적화할때 사용
+
+    ```javascript
+    import React, {useRef, useState, useMemo} from 'react';
+
+    function countActiveUsers(users) {
+        console.log('활설 사용수를 세는중...');
+        return users.filter(user => user.active).length;
+    }
+    
+    const count = userMemo(() => countActiveUsers(users), [users]);
+
+    return (
+            <>
+                <CreateUser 
+                    username={username}
+                    email={email}
+                    onChange={onChange}
+                    onCreate={onCreate} />
+                <UserList users={users} />
+                <div>활성 사용자 수 : {count}</div>
+            </>
+        );
+    ```
+
+### 함수형 컴포넌트의 useCallback Hook
+
+- 이전에 만들었는 함수를 새로 만들지 않고 재활용할 때 사용
+
+    ```javascript
+    import React, {useRef, useState, useMemo, useCallback} from 'react';
+
+    function countActiveUsers(users) {
+        console.log('활설 사용수를 세는중...');
+        return users.filter(user => user.active).length;
+    }
+
+    const onChange = useCallback(e => {
+            const {name, value} = e.target;
+            setInputs({
+                ...inputs,
+                [name]: value
+            });
+        }, [inputs]);
+
+    const onCreate = useCallback(() => {
+            const user = {
+                id: nextId.current,
+                username,
+                email,
+            };
+            //setUsers([...users, user]);
+            serUsers(users.concat(user));
+            setInputs({
+                username: '',
+                email: '',
+            });
+            nextId.current += 1;
+        }, [username, email, users]);
+
+    const onRemove = useCallback(id => {
+        setUsers(users.filter(user => user.id !== id));
+    }, [users]);
+
+    const onToggle = useCallback(id => {
+        setUsers(users.map(
+            user => user.id === id
+                ? {...user, active: !user.active}
+                : user
+        ))
+    });
+    
+    const count = useMemo(() => countActiveUsers(users), [users]);
+
+    return (
+            <>
+                <CreateUser 
+                    username={username}
+                    email={email}
+                    onChange={onChange}
+                    onCreate={onCreate} />
+                <UserList users={users} />
+                <div>활성 사용자 수 : {count}</div>
+            </>
+        );
+    ```
+
+### 함수형 컴포넌트의 React.memo
+
+- 렌더링 성능 최적화할때 사용됨 (함수형 업데이트 수정이 필요)
+
+    ```javascript
+    import React from 'react';        
+
+    function CreateUser({ username, email, onChange, onCreate }) {
+        return (
+            <div>
+                <input 
+                    name="username" 
+                    onChange={onChange}
+                    value={username}/>
+                <input
+                    name="email" 
+                    onChange={onChange}
+                    value={email}/>
+                <button onClick={onCreate}>등록</button>
+            </div>
+        );
+    }
+
+    export default React.memo(CreateUser);
+    ```
+    ```javascript
+    import React, {useEffect} from 'react';        
+
+    const User = React.memo(function User({ user, onRemove, onToggle }) {
+        const {username, email, id, active } = user;
+        useEffect(() => {
+            console.log('컴포넌트가 화면에 나타남');
+            return () => {
+                console.log('컴포넌트가 화면에 사라짐');
+            }
+        }, []);
+        return (
+            <div>
+                <b 
+                    onClick={() => onToggle(id)}
+                    style={{
+                    color: active ? 'green' : 'black',
+                    cursor: 'pointer'
+                }}>&nbsp;{username}</b> <span>({email})</span>
+                <button onClick={() => onRemove(id)}>삭제</button>
+            </div>
+        );
+    });
+
+    function UserList({users, onRemove, onToggle}) {
+        return (
+            {
+                users.map(
+                    (user, index) => (
+                        <User 
+                            user={user} 
+                            key={user.id} 
+                            onRemove={onRemove}
+                            onToggle={onToggle} />
+                    )
+                )
+            }
+        );
+    }
+
+    export default React.memo(UserList);
+    ```
+    ```javascript
+    import React, {useRef, useState, useMemo, useCallback} from 'react';
+
+    function countActiveUsers(users) {
+        console.log('활설 사용수를 세는중...');
+        return users.filter(user => user.active).length;
+    }
+
+    const onChange = useCallback(e => {
+            const {name, value} = e.target;
+            setInputs({
+                ...inputs,
+                [name]: value
+            });
+        }, [inputs]);
+
+    const onCreate = useCallback(() => {
+            const user = {
+                id: nextId.current,
+                username,
+                email,
+            };
+            //setUsers([...users, user]);
+            serUsers(users => users.concat(user));
+            setInputs({
+                username: '',
+                email: '',
+            });
+            nextId.current += 1;
+        }, [username, email]);
+
+    const onRemove = useCallback(id => {
+        setUsers(users => users.filter(user => user.id !== id));
+    }, []);
+
+    const onToggle = useCallback(id => {
+        setUsers(users => users.map(
+            user => user.id === id
+                ? {...user, active: !user.active}
+                : user
+        ))
+    }, []);
+    
+    const count = useMemo(() => countActiveUsers(users), [users]);
+
+    return (
+            <>
+                <CreateUser 
+                    username={username}
+                    email={email}
+                    onChange={onChange}
+                    onCreate={onCreate} />
+                <UserList users={users} />
+                <div>활성 사용자 수 : {count}</div>
+            </>
+        );
+    ```
