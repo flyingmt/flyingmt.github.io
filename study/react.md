@@ -50,26 +50,7 @@
     함수가 반환되는 것은 렌더링되는 HTML 요소로 React에서는 JSX라고 한다.
     마지막에는 export로 함수를 노출한다.
 
-- 클래스 형태 형태 컴포넌트 정의
-    - 꼭 필요할때 사용
-    - 기본 코드 유지보수에 사용
-     ```javascript
-    import React, { Component } from 'react';
-
-    class Hello extends Component {
-        static defaultProps = {
-            name: '이름없음',
-        }
-
-        render() {
-            const { color, isSpecial, name } = this.props;
-            return (
-                <div>안녕하세요.</div>
-            );
-        }
-    }
-
-    export default Hello;
+- [클래스 형태](https://github.com/flyingmt/flyingmt.github.io/blob/master/study/react-class.md)
 
 - 컴포넌트 사용하기 (App.js)
     ```javascript
