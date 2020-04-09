@@ -19,7 +19,12 @@
 
 - [React](https://github.com/flyingmt/flyingmt.github.io/blob/master/study/react.md)
 
-    - [Immer 패키지 - 불변성 쉽게 사용](https://github.com/flyingmt/flyingmt.github.io/blob/master/study/react-immer.md)
+    - [API 연동 하기]()
+    - [Router 사용하기]()
+    - [Redux 사용하기]()
+    - [Redux Middleware 사용하기]()
+    - [Immer - 불변성 쉽게 사용하기](https://github.com/flyingmt/flyingmt.github.io/blob/master/study/react-immer.md)
+    - [Feathers - 쉬운 실시간 서버 쉽게 만들기]()
 
 - [Java Spring Boot](https://github.com/flyingmt/flyingmt.github.io/blob/master/study/java-spring-boot.md)
 
