@@ -516,3 +516,13 @@
     export const UserDispatch = createContext(null);
     ```
 
+### Production 생성하기
+
+- 빌드를 한다.
+    ```
+    yarn build
+    ```
+- 테스트를 위해 웹서버를 연다.
+    ```
+    npx serve ./build
+    ```
