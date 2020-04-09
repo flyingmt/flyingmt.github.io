@@ -795,7 +795,7 @@
     }
     ```
 
-### 함수형 컴포넌트의 useMemo Hook
+### 함수형 컴포넌트의 useMemo Hook (변수 최적화)
 
 - 이전 연산된 값을 재사용할때 사용
 - 성능 최적화할때 사용
@@ -823,7 +823,7 @@
         );
     ```
 
-### 함수형 컴포넌트의 useCallback Hook
+### 함수형 컴포넌트의 useCallback Hook (함수 최적화)
 
 - 이전에 만들었는 함수를 새로 만들지 않고 재활용할 때 사용
 
@@ -885,7 +885,7 @@
         );
     ```
 
-### 함수형 컴포넌트의 React.memo
+### 함수형 컴포넌트의 React.memo (컴포넌트 최적화)
 
 - 렌더링 성능 최적화할때 사용됨 (함수형 업데이트 수정이 필요)
 
@@ -950,7 +950,9 @@
         );
     }
 
-    export default React.memo(UserList);
+    export default React.memo(
+        UserList,
+        (preProps, nextProps) => nextProps === preProps.user);
     ```
     ```javascript
     import React, {useRef, useState, useMemo, useCallback} from 'react';
@@ -1009,3 +1011,153 @@
             </>
         );
     ```
+
+### 함수형 컴포넌트의 useReducer Hook 
+
+- useState 대신에 상태를 업데이트할 수 있음
+- useState은 값 기반으로 업데이트하며, useReducer는 액션 기반으로 업데이트함.
+- 상태 업데이트 로직을 컴포넌트 밖으로 분리 가능
+
+    ```javascript    
+    import React, {useReducer} from 'react';
+
+    function reducer(state, action) {
+        switch(action.type) {
+            case 'INCREMENT':
+                return state + 1;
+            case 'DECREMENT':
+                return state - 1;
+            default:
+                //return state;
+                throw new Error('Unhandled action');
+        }
+    }
+    
+    function Counter() {
+        const [number, dispatch] = useReducer(reducer, 0);
+
+        const onIncrease = () => {
+            dispatch({
+                type: 'INCREMENT'
+            });
+        }
+        const onDecrease = () => {
+            dispatch({
+                type: 'DECREMENT'
+            });
+        }
+        return (
+            <div>
+                <h1>0</h1>
+                <button onClick="{onIncrease}">+1</button>
+                <button onClick="{onDecrease}">-1</button>
+            </div>
+        )
+    }
+    ```
+- 사용시 초기값을 설정해야 함
+
+    ```javascript
+    import React, {useRef, useReducer, useMemo, useCallback} from 'react';
+
+    function countActiveUsers(users) {
+        console.log('활설 사용수를 세는중...');
+        return users.filter(user => user.active).length;
+    }
+
+    function reducer(state, action) {
+        switch (action.type) {
+            case 'CHANGE_INPUT':
+                return {
+                    ...state,
+                    inputs: {
+                        ...state.inputs,
+                        [action.name] : action.value
+                    }
+                };
+            case 'CREATE_USER':
+                return {
+                    inputs: initialState.inputs,
+                    users: state.users.concat(action.user)
+                };
+            case 'TOGGLE_USER':
+                return {
+                    ...state,
+                    users: state.users.map(user => 
+                        user.id === action.id
+                            ? {...user, active: !user.active}
+                            : user
+                        )
+                };
+            case 'REMOVE_USER':
+                return {
+                    ...state,
+                    users: state.users.filter(user => user.id !== action.id)
+                }
+            default:
+                throw new Error('Unhandled action');
+        }
+    }
+
+    function App() {
+        const [state, dispatch] = useReducer(reducer, initialState);
+        const nextId = useRef(4);
+        const { users } = state;
+        const { username, email } = state.inputs;
+
+        const onChagne = useCallback(e => {
+            const { name, value } = e.target;
+            dispatch({
+                type: 'CHANGE_INPUT',
+                name,
+                value
+            })
+        }, []);
+
+        const onCreate = useCallback(() => {
+            dispatch({
+                type: 'CREATE_USER',
+                user: {
+                    id: nextId.current,
+                    username,
+                    email,
+                }
+            });
+            nextId.current += 1;
+        }, [username, email])
+
+        const onToggle = userCallback(id => {
+            dispatch({
+                type: 'TOGGLE_USER',
+                id
+            });
+        }. []);
+
+        const onRemove = userCallback(id => {
+            dispatch({
+                type: 'REMOVE_USER',
+                id
+            });
+        }. []);
+
+        const count = userMemo(() => countActiveUsers(users), [users]);
+
+        return (
+            <>
+                <CreateUser 
+                    username={username}
+                    email={email}
+                    onChange={onChange}
+                    onCreate={onCreate} />
+                <UserList 
+                    users={users}
+                    onToggle={onToggle}
+                    onRemove={onRemove} />
+                <div>활성 사용자 수 : {count}</div>
+            </>
+        );
+    }    
+    ```
+- 언제 사용하는가? useReducer vs useState
+    - 하나의 값이면 useState를 사용
+    - 여러개의 값이거나 구조가 복잡하면 useReducer를 사용
