@@ -526,3 +526,20 @@
     ```
     npx serve ./build
     ```
+
+### Prettier : 코드 정리
+
+- 문자열 기호를 무엇을 할지, 끝에 ; 붙일지, 들여쓰기를 얼마나 할지...
+- 명령으로 사용하거나 에디터와 연동하여 사용할 수 있음.
+- VS Code에서는 Prettier 플러그인을 설치하고 .prettierrc 파일을 만든다.
+    ```
+    {
+        "trailingComma": "all",
+        "tabWidth": 4,
+        "semi":true,
+        "singleQuote": true
+    }
+    ```
+- 다음에 Alt + Shift + F를 누르면 코드 정리가 됨. (저장시 작동되게 할 수도 있음)
+    - F1 > format on save
+    
