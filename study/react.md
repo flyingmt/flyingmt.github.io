@@ -1159,5 +1159,5 @@
     }    
     ```
 - 언제 사용하는가? useReducer vs useState
-    - 하나의 값이면 useState를 사용
-    - 여러개의 값이거나 구조가 복잡하면 useReducer를 사용
+    - 하나의 값이면 useState를 사용 (간단한것들)
+    - 여러개의 값이거나 구조가 복잡하면 useReducer를 사용 (복잡한것들)
