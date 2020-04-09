@@ -210,6 +210,12 @@
             console.log('컴포넌트가 보여지고 있습니다.');
         }
         ```
+    - componentDidUpdate
+        ```javascript
+        componentDidUpdate(prevProps, prevState, snapshot) {
+            console.log('componentDidUpdate');
+        }
+        ```
     - componentWillUnmount (제거될때)
 
 - 마운트 순서
@@ -225,3 +231,7 @@
     - componentDidUpdate
 - 언마운터 순서
     - componentWillUnmount
+
+- 컴포넌트에서 에러 잡기 
+    - componentDidCatch 메서드 사용함
+
