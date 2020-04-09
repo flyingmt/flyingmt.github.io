@@ -19,7 +19,7 @@
 
 - [React](https://github.com/flyingmt/flyingmt.github.io/blob/master/study/react.md)
 
-    - [TODO] [API 연동 하기]()
+    - [TODO] [API 연동 하기](https://github.com/flyingmt/flyingmt.github.io/blob/master/study/react-api.md)
     - [TODO] [Router 사용하기]()
     - [TODO] [Redux 사용하기]()
     - [TODO] [Redux Middleware 사용하기]()
