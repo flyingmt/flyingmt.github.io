@@ -1105,7 +1105,7 @@
         const { users } = state;
         const { username, email } = state.inputs;
 
-        const onChagne = useCallback(e => {
+        const onChange = useCallback(e => {
             const { name, value } = e.target;
             dispatch({
                 type: 'CHANGE_INPUT',
@@ -1161,3 +1161,177 @@
 - 언제 사용하는가? useReducer vs useState
     - 하나의 값이면 useState를 사용 (간단한것들)
     - 여러개의 값이거나 구조가 복잡하면 useReducer를 사용 (복잡한것들)
+
+### 함수형 컴포넌트의 Custom Hook
+
+- 반복된 코드에서 유용함 (예: 입력값 변경 처리)
+- 함수는 use로 시작함.
+- useState 대신에 useReducer를 사용해도 됨.
+    ```javascript
+    import { useState, useCallback } from 'react';
+
+    function useInputs(initialForm) {
+        const [form, setForm] = useState(initialForm);
+        const onChange = useCallback(e => {
+            const {name, value} = e.target;
+            setForm(form => ({...form, [name]: value}));
+        }, []);
+        const reset = useCallback(() => setForm(initialForm), [initialForm]);
+
+        return [form, onChange, reset];
+    };
+
+    export default useInputs;
+    ```
+    ```javascript
+    import React, {useRef, useReducer, useMemo, useCallback} from 'react';
+
+    function countActiveUsers(users) {
+        console.log('활설 사용수를 세는중...');
+        return users.filter(user => user.active).length;
+    }
+
+    function reducer(state, action) {
+        switch (action.type) {
+            case 'CREATE_USER':
+                return {
+                    inputs: initialState.inputs,
+                    users: state.users.concat(action.user)
+                };
+            case 'TOGGLE_USER':
+                return {
+                    ...state,
+                    users: state.users.map(user => 
+                        user.id === action.id
+                            ? {...user, active: !user.active}
+                            : user
+                        )
+                };
+            case 'REMOVE_USER':
+                return {
+                    ...state,
+                    users: state.users.filter(user => user.id !== action.id)
+                }
+            default:
+                throw new Error('Unhandled action');
+        }
+    }
+
+    function App() {
+        const [state, dispatch] = useReducer(reducer, initialState);
+        const [form, onChange, reset] = useInputs({
+            username: '',
+            email: '',
+        });
+        const { username, email } = form;
+        const nextId = useRef(4);
+        const { users } = state;
+
+        const onCreate = useCallback(() => {
+            dispatch({
+                type: 'CREATE_USER',
+                user: {
+                    id: nextId.current,
+                    username,
+                    email,
+                }
+            });
+            nextId.current += 1;
+            reset();
+        }, [username, email, reset])
+
+        const onToggle = userCallback(id => {
+            dispatch({
+                type: 'TOGGLE_USER',
+                id
+            });
+        }. []);
+
+        const onRemove = userCallback(id => {
+            dispatch({
+                type: 'REMOVE_USER',
+                id
+            });
+        }. []);
+
+        const count = userMemo(() => countActiveUsers(users), [users]);
+
+        return (
+            <>
+                <CreateUser 
+                    username={username}
+                    email={email}
+                    onChange={onChange}
+                    onCreate={onCreate} />
+                <UserList 
+                    users={users}
+                    onToggle={onToggle}
+                    onRemove={onRemove} />
+                <div>활성 사용자 수 : {count}</div>
+            </>
+        );
+    }    
+    ```
+
+### 전역값 관리 (Context API)
+
+- 이벤트 함수를 전달 할때 여러 단계를 걸쳐서 전달해야 할때 여러 단계를 생략할 수 있음.
+    ```javascript
+    import React, { createContext, useContext } from 'react';
+
+    const MyContext = createContext('defaultValue');
+
+    function Child() {
+        const text = useContext(MyContext);
+        return <div>안녕하세요? {text}</div>
+    }
+
+    function Parent() {
+        return <Child  />
+    }
+
+    function GrandParent() {
+        return <Parent />
+    }
+
+    function ContextSample() {
+        return (
+            <MyContext.Provider value="GOOD">
+                <GrandParent />
+            </MyContext.Provider>
+        )
+    }
+
+    export ContextSample;
+    ```
+- Context는 유동적으로 설정할 수 있음.
+    ```javascript
+    import React, { createContext, useContext, useState } from 'react';
+
+    const MyContext = createContext('defaultValue');
+
+    function Child() {
+        const text = useContext(MyContext);
+        return <div>안녕하세요? {text}</div>
+    }
+
+    function Parent() {
+        return <Child  />
+    }
+
+    function GrandParent() {
+        return <Parent />
+    }
+
+    function ContextSample() {
+        const [value, setValue] = useState(true);
+        return (
+            <MyContext.Provider value="{value ? 'GOOD' : 'BAD'">
+                <GrandParent />
+                <button onClick={() setValue(!value)}>Click Me</button>
+            </MyContext.Provider>
+        )
+    }
+
+    export ContextSample;
+    ```
