@@ -40,17 +40,8 @@
     ```javascript
     import React from 'react';
 
-    class Hello extends Component {
-        static defaultProps = {
-            name: '이름없음',
-        }
-
-        render() {
-            const { color, isSpecial, name } = this.props;
-            return (
-                <div>안녕하세요.</div>
-            );
-        }
+    function Hello() {
+        return <div>안녕하세요.</div>;
     }
 
     export default Hello;
@@ -65,9 +56,17 @@
      ```javascript
     import React, { Component } from 'react';
 
-    class 
-    function Hello() {
-        return <div>안녕하세요.</div>;
+    class Hello extends Component {
+        static defaultProps = {
+            name: '이름없음',
+        }
+
+        render() {
+            const { color, isSpecial, name } = this.props;
+            return (
+                <div>안녕하세요.</div>
+            );
+        }
     }
 
     export default Hello;
