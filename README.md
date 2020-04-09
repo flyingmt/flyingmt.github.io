@@ -19,6 +19,8 @@
 
 - [React](https://github.com/flyingmt/flyingmt.github.io/blob/master/study/react.md)
 
+    - [Immer 패키지 - 불변성 쉽게 사용](https://github.com/flyingmt/flyingmt.github.io/blob/master/study/react-immer.md)
+
 - [Java Spring Boot](https://github.com/flyingmt/flyingmt.github.io/blob/master/study/java-spring-boot.md)
 
 - [Deep Learning](https://github.com/flyingmt/flyingmt.github.io/blob/master/study/deep-learning.md)
