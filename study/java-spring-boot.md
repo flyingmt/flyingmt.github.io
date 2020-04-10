@@ -74,6 +74,9 @@
         ddl-auto: update
   ```
 
+- H2 Console
+  - H2를 사용하면 프로젝트 실행 상태에서는 http://localhost:8080/h2-console을 접속하면 Console UI로 간단한 DB 작업할 수 있는 서비스를 제공함.
+
 ### Gradle에 대한 것들
 
 * Gradle을 실행하기 위해서는 터미널에서 윈도우는 gradlew.bat로, 나머지는 gradlew로 명령함.
