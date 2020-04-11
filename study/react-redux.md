@@ -199,8 +199,8 @@
         const dispatch = useDispatch();
         
         const onSetDiff = (diff) => dispatch(setDiff(diff));
-        const onIncrease = () => dispatch(increase);
-        const onDecrease = () => dispatch(decrease);
+        const onIncrease = () => dispatch(increase());
+        const onDecrease = () => dispatch(decrease());
 
         return (
             <Counter
