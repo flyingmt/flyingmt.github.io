@@ -19,6 +19,7 @@
     - [Chocolatey](https://github.com/flyingmt/flyingmt.github.io/blob/master/study/devops-chocolatey.md) : 윈도우에서 쉽게 패키지 관리하기
 
 - [Javascript](https://github.com/flyingmt/flyingmt.github.io/blob/master/study/javascript.md)
+- [Typescript](https://github.com/flyingmt/flyingmt.github.io/blob/master/study/typescript.md)
 
 - [React](https://github.com/flyingmt/flyingmt.github.io/blob/master/study/react.md)
 
