@@ -22,7 +22,7 @@
 - [Typescript](https://github.com/flyingmt/flyingmt.github.io/blob/master/study/typescript.md)
 
 - [React](https://github.com/flyingmt/flyingmt.github.io/blob/master/study/react.md)
-
+    - [환경 직접 구성하기](https://github.com/flyingmt/flyingmt.github.io/blob/master/study/react-babel-webpack.md)
     - [API 연동 하기](https://github.com/flyingmt/flyingmt.github.io/blob/master/study/react-api.md)    
     - [Redux 사용하기](https://github.com/flyingmt/flyingmt.github.io/blob/master/study/react-redux.md)
     - [Redux Middleware 사용하기](https://github.com/flyingmt/flyingmt.github.io/blob/master/study/react-redux-middleware.md)
