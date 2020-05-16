@@ -447,4 +447,132 @@ Author(id:2) {
         });
 
         ```
+    - Root 쿼리
+        ```javascript
+        const RootQuery = new GraphQLObjectType({
+            name: 'RootQueryType',
+            fields: {
+                book: {
+                    type: BookType,
+                    args: { id: {type: GraphQLID } },
+                    resolve(parent, args) {
+                        return _.find(books, { id: args.id });
+                    }
+                },
+                author: {
+                    type: AuthorType,
+                    args: { id: {type: GraphQLID }},
+                    resolve(parent, args) {
+                        return _.find(authors, { id: args.id });
+                    }
+                },
+                books: {
+                    type: new GraphQLList(BookType),
+                    resolve(parent, args) {
+                        return books;
+                    }
+                },
+                authors: {
+                    type: new GraphQLList(AuthorType),
+                    resolve(parent, args) {
+                        return authors;
+                    }
+                }
+            }
+        });
+        ```
+    - MongoDB 사용하기
+        - gql-ninja 데이터베이스 생성
+        - mongoose 설치
+            ```
+            yarn add mongoose
+            ```
+        - app.js
+            ```javascript
+            const express = require('express');
+            const graphqlHTTP = require('express-graphql');
+            const schema = require('./schema/schema');
+            const mongoose = require('mongoose');
+
+            const app = express();
+
+            mongoose.connect('mongodb://localhost:27017/gql-ninja');
+            mongoose.connection.once('open', () => {
+                console.log('connected to database');
+            });
+
+            app.use('/graphql', graphqlHTTP({
+                schema: schema,
+                graphiql: true
+            }));
+            app.listen(4000, () => {
+                console.log('now listening for request on port 4000');
+            });
+            ```
+        - models 폴더 생성, book.js와 auther.js 파일 생성
+        - book.js
+            ```javascript
+            const mongoose = require('mongoose');
+            const Schema = mongoose.Schema;
+
+            const bookSchema = new Schema({
+                name: String,
+                genre: String,
+                authorId: String
+            });
+
+            module.exports = mongoose.model('Book', bookSchema);
+            ```
+        - author.js
+            ```javascript
+            const mongoose = require('mongoose');
+            const Schema = mongoose.Schema;
+
+            const authorSchema = new Schema({
+                name: String,
+                age: Number
+            });
+
+            module.exports = mongoose.model('Author', authorSchema);
+            ```
+        - Mutations (Add, Remove, Delete)
+            - GraphQL에서는 어떻게 데이터를 조작할 수 있는지 정의해야 함.
+            ```javascript
+            const Mutation = new GraphQLObjectType({
+                name: 'Mutation',
+                fields: {
+                    addAuthor: {
+                        type: AuthorType,
+                        args: {
+                            name: { type: GraphQLString },
+                            age: { type: GraphQLInt },
+                        },
+                        resolve(parent, args) {
+                            let author = new Author({
+                                name: args.name,
+                                age: args.age
+                            });
+                            return author.save();
+                        }
+                    },
+                    addBook: {
+                        type: BookType,
+                        args: {
+                            name: { type: GraphQLString },
+                            genre: { type: GraphQLString },
+                            authorId: { type: GraphQLID }
+                        },
+                        resolve(parent, args) {
+                            let book = new Book({
+                                name: args.name,
+                                genre: args.genre,
+                                authorId: args.authorId
+                            });
+                            return book.save();
+                        }
+                    },
+                }
+            });
+            ```
+
 ### GraphQL 클라이언트 만들기
