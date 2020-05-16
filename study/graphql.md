@@ -612,4 +612,128 @@ Author(id:2) {
                 }
             });
             ```
+- CORS 설정
+    - 패키지 설치
+        ```
+        yarn add cors
+        ```
+    - 적용하기 (server/app.js)
+        ```javascript
+        const express = require('express');
+        const graphqlHTTP = require('express-graphql');
+        const schema = require('./schema/schema');
+        const mongoose = require('mongoose');
+        const cors = require('cors');
+
+        const app = express();
+
+        app.use(cors());
+
+        mongoose.connect('mongodb://localhost:27017/gql-ninja');
+        mongoose.connection.once('open', () => {
+            console.log('connected to database');
+        });
+
+        app.use('/graphql', graphqlHTTP({
+            schema: schema,
+            graphiql: true
+        }));
+        app.listen(4000, () => {
+            console.log('now listening for request on port 4000');
+        });
+
+
+        ```
 ### GraphQL 클라이언트 만들기
+
+- 프로젝트 생성 (create-react-app)
+- 기본 패키지 추가
+    ```
+    yarn add apollo-boost @apollo/react-hooks graphql
+    ```
+- GraphQL 서버 연결 및 Provider 생성
+    ```javascript
+    import React from 'react';
+    import ApolloClient from 'apollo-boost';
+    import { ApolloProvider } from '@apollo/react-hooks';
+
+    import BookList from './components/BookList';
+
+    const client = new ApolloClient({
+    uri: 'http://localhost:4000/graphql'
+    })
+
+    function App() {
+    return (
+        <ApolloProvider client={client}>
+        <div id="main">
+            <h1>Ninja's Reading List</h1>
+            <BookList />
+        </div>
+        </ApolloProvider>
+    );
+    }
+
+    export default App;
+    ```
+- 쿼리 만들기
+    ```javascript
+    import React from 'react';
+    import { gql } from 'apollo-boost';
+
+    const getBooksQuery = gql`
+    {
+        books {
+            name
+            id
+        }
+    }
+    `;
+
+    function BookList () {      
+        return (
+            <div>
+                <ul id='book-list'>
+                    <li>Book name</li>
+                </ul>
+            </div>
+            );
+    }
+
+    export default BookList;
+    ```
+- 바인딩하기
+    ```javascript
+    import React from 'react';
+    import gql from 'graphql-tag'
+    import { useQuery } from '@apollo/react-hooks';
+
+    const getBooksQuery = gql`
+    {
+        books {
+            name
+            id
+        }
+    }
+    `;
+
+    function BookList () {  
+        const { loading, error, data } = useQuery(getBooksQuery);
+        
+        if (loading) return 'Loading...';
+        if (error) return `Error! ${error.message}`;
+
+        return (
+            <div>
+                <ul id='book-list'>
+                    {data.books.map(book => (
+                        <li key={book.id}>{book.name}</li>
+                    ))}                
+                </ul>
+            </div>
+            );
+    }
+
+    export default BookList;
+
+    ```
