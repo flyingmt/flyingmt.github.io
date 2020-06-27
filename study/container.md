@@ -1,7 +1,3 @@
-## Containers
-
-### Docker
-
 ### Kubernetes
 
 설치하기
@@ -177,3 +173,38 @@
       > kops delete cluster kubernetes.내도메인 --state=s3://kops-state-b429b77
       > kops delete cluster kubernetes.내도메인 --state=s3://kops-state-b429b77 --yes
       ```
+
+### Containers
+
+- Docker Engine을 이용해야 한다
+- Docker 설치 (vagrant 내)
+  ```
+  > sudo apt-get install docker.io
+  > sudo apt-get install git
+  ```
+- Dockerfile
+  ```yaml
+  FROM node:4.6
+  WORKDIR /app
+  ADD ./app
+  RUN npm install
+  EXPORT 3000
+  CMD npm start
+  ```
+  ```
+  > docker build .
+  ```
+- Docker 이미지 만들어보기
+  - 만들 프로그램 다운로드
+    ```
+    > git clone https://github.com/wardviaene/docker-demo
+    > cd docker-demo
+    ```
+  - 이미지 만들기
+    ```
+    sudo docker build .
+    ```
+  - 이미지 실행하기
+    ```
+    > docker run -p 3000:3000 -lt 생성이미지ID
+    ```
