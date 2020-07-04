@@ -268,4 +268,35 @@
    > kubectl expose pod nodehelloworld.example.com --type=NodePort --name nodehelloworld-service
    > minikube service nodehelloworld-service --url
   ```
-
+  - AWS에서는 ELB를 사용할 수 있도록 따로 서비스를 만든다
+    - pod : helloworld.yml
+    ```yaml
+    apiVersoin: v1
+    kind: Pod
+    metadata:
+      name: nodehelloworld.example.com
+      labels:
+        app: helloworld
+    spec:
+      containers:
+      - name: k8s-demo
+        image: wardviaene/k8s-demo
+        ports:
+        - name: nodejs-port
+          containerPort: 3000
+    ```
+    - service : helloworld-service.yml
+    ```yaml
+    apiVersion: v1
+    kind: Service
+    metadata:
+      name : helloworld-service
+    spec:
+      ports:
+      - port: 80
+        targetPort: nodejs-port
+        protocal: TCP
+      selector:
+        app: helloworld
+      type: LoadBalancer
+    ```
