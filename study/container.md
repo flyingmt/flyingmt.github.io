@@ -182,7 +182,7 @@
   > sudo apt-get install docker.io
   > sudo apt-get install git
   ```
-- Dockerfile
+- Dockerfile 내용
   ```yaml
   FROM node:4.6
   WORKDIR /app
@@ -191,6 +191,7 @@
   EXPORT 3000
   CMD npm start
   ```
+  Docker 빌드 명령
   ```
   > docker build .
   ```
@@ -208,3 +209,63 @@
     ```
     > docker run -p 3000:3000 -lt 생성이미지ID
     ```
+- Docker Registry
+  - Docker를 로컬에서만 사용한다면 Docker Registry가 필요 없음
+  - 만약 큐버네티스에서 사용하려면 Docker Hub 같은 Docker Registry에 등록해야 한다
+  - Docker Hub에 등록하기 위해서는
+  ```
+  > docker login
+  > docker tag imageid your-login/docker-demo
+  > docker push your-login/docker-demo
+  ```
+  - Dockerfile 빌드시 tag을 정할 수 있음
+  ```
+  > docker build -t your-login/docker-demo .
+  ```
+
+- Docker 주의사항
+  - 하나의 컨테이너에 하나의 프로세스가 되도록 하자
+  - 컨테이너안에 내용은 저장되지 않는다 (volumes를 사용해서 할 수 있음)
+
+- Docker Image를 Kubernetes Cluster에 사용하기
+  - 컨테이너 기반 이미지를 실행하기전 pod 정의를 해야 함
+    - Pod는 Kubernetes에서 실행하는 응용프로그램을 정의함
+    - Pod는 응용프로그램을 만드는 하나이상의 연결된 컨테이너를 가질 수 있음
+    - 이들 응용프로그램은 그들의 로컬 포트 번호를 사용하여 통신함
+  - Pod 파일인 "pod-helloworld.yml"을 만든다
+  ```yaml
+  apiVersoin: v1
+  kind: Pod
+  metadata:
+    name: nodehelloworld.example.com
+    labels:
+      app: helloworld
+  spec:
+    containers:
+    - name: docker-demo
+      image: flyingmt/docker-demo
+      ports:
+      - containerPort: 3000
+  ```
+  - kubctl 사용하여 Kubernetes Cluster에 pod 생성
+  ```
+  > kubectl create -f docker-demo/pod-helloworld.yml
+  ``` 
+  - 유용한 명령어들
+    - kubectl get node : 실행되고 있는 node들 가져오기
+    - kubectl get service : 실행되고 있는 service들 가져오기
+    - kubectl get pod : 실행되고 있는 모든 pod들 가져오기
+    - kubectl describe pod podname : podename의 상세 정보 가져오기 
+    - kubectl expose pod podename --port-444 --name-frontend : Pod의 포트를 노출 (새로운 서비스 만듬)
+    - kubectl port-forward podname 8080:3000 : 노출된 pod의 포트를 여러분의 로컬에 포트 포워드하기
+    - kubectl attach podname -i : Pod에 붙기
+    - kubectl exec podname -- command : Pod에서 명령 실행 (-c로 컨테이터 지정가능)
+    - kubectl label pods podename mylable=awesome : 새로운 레이블을 pod에 붙이기
+    - kubectl run -i --tty busybox --image=busybox --restart=Never -- sh : Pod에 셀 실행
+
+  - minikube에서는 다음과 같이 포트를 노출 시킬수 있음
+  ```
+   > kubectl expose pod nodehelloworld.example.com --type=NodePort --name nodehelloworld-service
+   > minikube service nodehelloworld-service --url
+  ```
+
